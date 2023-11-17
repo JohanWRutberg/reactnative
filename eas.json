@@ -1,0 +1,18 @@
+{
+  "build": {
+    "reactnative": {
+      "android": {
+        "buildType": "apk"
+      }
+    },
+    "reactnative2": {
+      "android": {
+        "gradleCommand": ":app:assembleRelease"
+      }
+    },
+    "reactnative3": {
+      "developmentClient": true
+    },
+    "production": {}
+  }
+}
