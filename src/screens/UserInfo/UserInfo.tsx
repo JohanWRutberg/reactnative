@@ -19,18 +19,23 @@ export const UserInfo = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.infoContainer}>
-        <Text h4>{`${user.firstName} ${user.lastName}`}</Text>
+        <Text h4>User: {`${user.firstName} ${user.lastName}`}</Text>
       </View>
       <View style={styles.actionsContainer}>
         {loggedInAs?.id === user.id ? (
-          <>
-            <Button style={{}} onPress={updateUser} title="Edit"></Button>
-            <Button onPress={deleteUser} title="Delete" color="error"></Button>
-            <Button onPress={() => dispatch(logOut())} title="Log out" color="error"></Button>
-          </>
+          <View style={styles.buttonContainer}>
+            <Button style={styles.editBtn} onPress={updateUser} color="#5E5D5E" title="Edit"></Button>
+            <Button style={styles.deleteBtn} onPress={deleteUser} title="Delete" color="#FF385C"></Button>
+            <Button
+              style={styles.logoutBtn}
+              onPress={() => dispatch(logOut())}
+              title="Log out"
+              color="#1A1A1A"
+            ></Button>
+          </View>
         ) : (
           <>
-            <Button onPress={() => dispatch(logIn(user))} title="Log in"></Button>
+            <Button onPress={() => dispatch(logIn(user))} color="#5E5D5E" title="Log in"></Button>
           </>
         )}
       </View>
@@ -51,5 +56,13 @@ const styles = StyleSheet.create({
   },
   actionsContainer: {
     marginBottom: 24
-  }
+  },
+  buttonContainer: {
+    padding: 5
+  },
+  editBtn: {
+    padding: 12
+  },
+  deleteBtn: { padding: 12 },
+  logoutBtn: { padding: 12 }
 });

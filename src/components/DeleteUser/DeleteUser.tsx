@@ -4,6 +4,7 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Button } from "@rneui/themed";
 import { useDeleteUserMutation } from "../../store/api/usersApi";
+import { useDeleteAllPostsMutation } from "../../store/api/postsApi";
 import { useToast } from "react-native-toast-notifications";
 import { useDispatch } from "react-redux";
 import { logOut } from "../../store/slices/authSlice";
@@ -13,28 +14,24 @@ const DeleteUser = ({ route, navigation }) => {
   const dispatch = useDispatch();
   const toast = useToast();
   const [deleteUser, { isLoading }] = useDeleteUserMutation();
+  const [deleteAllPosts, { isLoading: isLoading2 }] = useDeleteAllPostsMutation();
 
-  const handleDelete = () => {
-    deleteUser({ userId: user.id })
-      .then(() => {
-        toast.show("User deleted successfully", {
-          type: "success",
-          placement: "top",
-          duration: 4000,
-          animationType: "slide-in"
-        });
-        dispatch(logOut());
-        navigation.navigate("UserList");
-      })
-      .catch((error) => {
-        toast.show(error, { type: "danger" });
+  const handleDelete = async () => {
+    try {
+      await Promise.all([deleteUser({ userId: user.id }), deleteAllPosts({ userId: user.id })]);
+      toast.show("User deleted successfully", {
+        type: "success",
+        placement: "top",
+        duration: 4000,
+        animationType: "slide-in"
       });
+      dispatch(logOut());
+      navigation.navigate("UserList");
+    } catch (error) {
+      toast.show(error, { type: "danger" });
+    }
   };
-  /* toast.show(`Användaren ${newFirstName} ${newLastName} har uppdaterats!`, {
-          type: "success",
-          placement: "top",
-          duration: 4000,
-          animationType: "slide-in" */
+
   return (
     <View style={styles.container}>
       <Text>Delete User</Text>

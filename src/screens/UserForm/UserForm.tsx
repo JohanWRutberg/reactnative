@@ -1,5 +1,6 @@
+import React from "react";
 import { useRef, useState } from "react";
-import { Text, View, StyleSheet, TouchableWithoutFeedback, Keyboard } from "react-native";
+import { Text, View, StyleSheet, SafeAreaView, TextInput, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { Input, Button } from "@rneui/themed";
 import { useCreateUserMutation } from "../../store/api/usersApi";
 import { useToast } from "react-native-toast-notifications";
@@ -12,6 +13,9 @@ export const UserForm = (props) => {
   const [lastName, setLastName] = useState("");
   const [createUser, { isLoading }] = useCreateUserMutation();
   const toast = useToast();
+
+  const [text, onChangeText] = React.useState("Useless Text");
+  const [number, onChangeNumber] = React.useState("");
 
   const handleSubmit = () => {
     console.log("firstName: ", firstName);
@@ -56,24 +60,26 @@ export const UserForm = (props) => {
       <View style={styles.container}>
         <View style={styles.actionsContainer}>
           <Text>Create a user</Text>
-          <Input
+          <TextInput
+            style={styles.input}
+            onChangeText={(text) => setFirstName(text)}
+            value={firstName}
             returnKeyType="next"
             onSubmitEditing={() => lastNameRef.current.focus()}
             blurOnSubmit={false}
-            value={firstName}
-            disabled={isLoading}
-            onChangeText={(text) => setFirstName(text)}
+            /* disabled={isLoading} */
             placeholder="First name"
-          ></Input>
-          <Input
-            ref={lastNameRef}
+          ></TextInput>
+          <TextInput
+            style={styles.input}
+            /* ref={lastNameRef} */
             value={lastName}
-            disabled={isLoading}
+            /*  disabled={isLoading} */
             returnKeyType="send"
             onSubmitEditing={() => handleSubmit()}
             onChangeText={(text) => setLastName(text)}
             placeholder="Last name"
-          ></Input>
+          ></TextInput>
           <Button title="Create user" disabled={isLoading} loading={isLoading} onPress={() => handleSubmit()}></Button>
         </View>
       </View>
@@ -94,5 +100,11 @@ const styles = StyleSheet.create({
   },
   actionsContainer: {
     marginBottom: 24
+  },
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10
   }
 });

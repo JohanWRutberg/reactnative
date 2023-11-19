@@ -37,7 +37,8 @@ const NavigationWrapper = () => {
     <NavigationContainer>
       <Tab.Navigator
         screenOptions={{
-          tabBarActiveTintColor: Colors.primary
+          tabBarActiveTintColor: Colors.primary,
+          tabBarInactiveTintColor: "gray"
         }}
       >
         <Tab.Screen

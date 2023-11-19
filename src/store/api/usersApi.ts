@@ -11,6 +11,7 @@ const firebaseBaseQuery = async ({ baseUrl, url, method, body }) => {
 
     case "POST":
       const docRef = await addDoc(collection(db, url), body);
+      await updateDoc(doc(db, url), { id: docRef.id, ...body });
       return { data: { id: docRef.id, ...body } };
 
     case "PUT":

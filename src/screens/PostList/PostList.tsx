@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { logIn } from "../../store/slices/authSlice";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { formatISO } from "../../utils";
 
 interface Post {
   id: string;
@@ -22,7 +23,6 @@ interface User {
 
 function PostList() {
   const { data: posts, isLoading, isError, refetch } = useGetPostsQuery({});
-  console.log("Fetched Posts:", posts);
   const [refreshing, setRefreshing] = useState(false);
   const [users, setUsers] = useState<Record<string, User>>({});
 
@@ -34,23 +34,24 @@ function PostList() {
     refetch().then(() => setRefreshing(false));
   }, [refetch]);
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      if (posts) {
-        const userIds = posts.map((post) => post.post.createdBy);
-        const uniqueUserIds = [...new Set(userIds)];
+  const fetchUsers = async () => {
+    if (posts) {
+      const userIds = posts.map((post) => post.post.createdBy.id);
+      const uniqueUserIds = [...new Set(userIds)];
 
-        for (const userId of uniqueUserIds as string[]) {
-          try {
-            const { data } = await useGetUsersQuery(userId);
-            setUsers((prevUsers) => ({ ...prevUsers, [userId]: data }));
-          } catch (error) {
-            console.error("Error fetching user:", error);
-          }
+      for (const userId of uniqueUserIds as string[]) {
+        if (!userId) continue;
+        try {
+          const { data } = useGetUsersQuery(userId);
+          setUsers((prevUsers) => ({ ...prevUsers, [userId]: data }));
+        } catch (error) {
+          console.error("Error fetching user:", error);
         }
       }
-    };
+    }
+  };
 
+  useEffect(() => {
     fetchUsers();
   }, [posts]);
 
@@ -71,8 +72,10 @@ function PostList() {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.infoContainer}>
-            <Text style={{ fontSize: 16, color: "#fff" }}>Created by: {[item.post.createdBy]}</Text>
-            <Text style={{ fontSize: 16, color: "#fff" }}>Created date: {item.post.createdDate}</Text>
+            <Text style={{ fontSize: 16, color: "#fff" }}>
+              Created by: {`${item.post.createdBy.firstName} ${item.post.createdBy.lastName}`}
+            </Text>
+            <Text style={{ fontSize: 16, color: "#fff" }}>Created date: {formatISO(item.post.createdDate)}</Text>
             <Text style={{ fontSize: 16, color: "#fff" }}>Text: {item.post.text}</Text>
           </View>
         )}

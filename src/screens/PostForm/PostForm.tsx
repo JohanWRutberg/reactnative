@@ -24,8 +24,12 @@ function PostForm() {
     createPost({
       post: {
         text: postText,
-        createdBy: loggedInAs.id,
-        createdDate: new Date().toLocaleDateString()
+        createdBy: {
+          id: loggedInAs.id,
+          firstName: loggedInAs.firstName,
+          lastName: loggedInAs.lastName
+        },
+        createdDate: Math.floor(new Date().getTime() / 1000)
       }
     });
 
@@ -38,7 +42,12 @@ function PostForm() {
       <View style={styles.container}>
         <View style={styles.actionsContainer}>
           <Text>Create a post</Text>
-          <TextInput placeholder="Enter your post" value={postText} onChangeText={(text) => setPostText(text)} />
+          <TextInput
+            style={styles.input}
+            placeholder="Enter your post"
+            value={postText}
+            onChangeText={(text) => setPostText(text)}
+          />
           <Button title="Create post" onPress={handleCreatePost} />
         </View>
       </View>
@@ -61,5 +70,11 @@ const styles = StyleSheet.create({
   },
   actionsContainer: {
     marginBottom: 24
+  },
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10
   }
 });

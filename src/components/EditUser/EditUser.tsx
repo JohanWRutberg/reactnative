@@ -62,7 +62,13 @@ const EditUser = ({ route, navigation }) => {
         onChangeText={(text) => setNewLastName(text)}
         placeholder="New Last Name"
       ></Input>
-      <Button title="Update User" disabled={isLoading} loading={isLoading} onPress={handleUpdate}></Button>
+      <Button
+        title="Edit User"
+        color="#5E5D5E"
+        disabled={isLoading}
+        loading={isLoading}
+        onPress={handleUpdate}
+      ></Button>
     </View>
   );
 };
