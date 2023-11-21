@@ -46,12 +46,11 @@ export const usersApi = createApi({
       invalidatesTags: ["users"]
     }),
     getUsers: builder.query({
-      // Define your query function here
       query: () => ({
         baseUrl: "",
         url: "users",
         method: "GET",
-        body: {} // You can customize this based on your API requirements
+        body: {}
       }),
       providesTags: ["users"]
     }),

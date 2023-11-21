@@ -66,7 +66,7 @@ const NavigationWrapper = () => {
             name="UserInfo"
             component={UserInfo}
             options={{
-              tabBarLabel: "User",
+              tabBarLabel: "Logged In",
               tabBarIcon: ({ color, size }) => <AntDesign name="user" color={color} size={size} />,
               title: `${loggedInAs.firstName} ${loggedInAs.lastName}`
             }}
@@ -87,7 +87,7 @@ const NavigationWrapper = () => {
           name="PostList"
           component={PostList}
           options={{
-            tabBarLabel: "Post",
+            tabBarLabel: "Posts",
             tabBarIcon: ({ color, size }) => <Octicons name="list-unordered" color={color} size={size} />
           }}
         />
