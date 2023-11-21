@@ -1,5 +1,3 @@
-// src/components/DeleteUser/DeleteUser.tsx
-
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Button } from "@rneui/themed";
@@ -36,7 +34,14 @@ const DeleteUser = ({ route, navigation }) => {
     <View style={styles.container}>
       <Text>Delete User</Text>
       <Text>{`Are you sure you want to delete ${user.firstName} ${user.lastName}?`}</Text>
-      <Button title="Delete User" disabled={isLoading} loading={isLoading} onPress={handleDelete}></Button>
+      <Button
+        style={styles.deleteBtn}
+        color="#FF385C"
+        title="Delete User"
+        disabled={isLoading}
+        loading={isLoading}
+        onPress={handleDelete}
+      ></Button>
     </View>
   );
 };
@@ -46,7 +51,8 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     alignItems: "center"
-  }
+  },
+  deleteBtn: { padding: 2 }
 });
 
 export default DeleteUser;

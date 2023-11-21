@@ -1,5 +1,3 @@
-// src/components/EditUser/EditUser.tsx
-
 import React, { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Button, Input } from "@rneui/themed";
@@ -41,11 +39,6 @@ const EditUser = ({ route, navigation }) => {
         });
       });
   };
-  /* toast.show(`Användaren ${firstName} ${lastName} har uppdaterats!`, {
-          type: "success",
-          placement: "top",
-          duration: 4000,
-          animationType: "slide-in" */
 
   return (
     <View style={styles.container}>

@@ -23,7 +23,6 @@ const UserList = ({ navigation }) => {
     }, [loggedInAs])
   );
 
-  // Check if data is defined before sorting
   const sortedData = data && data.slice().sort((a, b) => a.firstName.localeCompare(b.firstName));
 
   return (

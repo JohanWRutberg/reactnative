@@ -55,7 +55,7 @@ const NavigationWrapper = () => {
           name="UserForm"
           component={UserForm}
           options={{
-            tabBarLabel: "User Form",
+            tabBarLabel: "Create User",
             tabBarIcon: ({ color, size }) => <AntDesign name="form" color={color} size={size} />,
             headerShown: true
           }}
