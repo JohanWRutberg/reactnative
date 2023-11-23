@@ -16,10 +16,18 @@ export const UserInfo = ({ route, navigation }) => {
     navigation.navigate("DeleteUser", { user });
   };
 
+  const handleLogin = () => {
+    // Dispatch the logIn action
+    dispatch(logIn(user));
+
+    navigation.navigate("UserList");
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.infoContainer}>
-        <Text h4>User: {`${user.firstName} ${user.lastName}`}</Text>
+        <View style={{ marginTop: 200 }} />
+        <Text h4 style={{ textAlign: "center" }}>{`${user.firstName} ${user.lastName}`}</Text>
       </View>
       <View style={styles.actionsContainer}>
         {loggedInAs?.id === user.id ? (
@@ -35,7 +43,8 @@ export const UserInfo = ({ route, navigation }) => {
           </View>
         ) : (
           <>
-            <Button onPress={() => dispatch(logIn(user))} color="#5E5D5E" title="Log in"></Button>
+            <Button onPress={handleLogin} color="#5E5D5E" title="Log in"></Button>
+            <Text style={{ textAlign: "center" }}>Log in to be able to Post a message!</Text>
           </>
         )}
       </View>

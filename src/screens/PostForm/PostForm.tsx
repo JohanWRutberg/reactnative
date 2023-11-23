@@ -5,6 +5,7 @@ import { Input, Button } from "@rneui/themed";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { useToast } from "react-native-toast-notifications";
+import { useNavigation } from "@react-navigation/native";
 
 interface Post {
   text: string;
@@ -17,6 +18,7 @@ function PostForm() {
   const loggedInAs = useSelector((state: RootState) => state.auth.loggedInAs);
   const [createPost] = useCreatePostMutation();
   const toast = useToast();
+  const navigation = useNavigation();
 
   const handleCreatePost = () => {
     if (!loggedInAs) {
@@ -48,7 +50,8 @@ function PostForm() {
         createdDate: Math.floor(new Date().getTime() / 1000)
       }
     });
-
+    navigation.navigate("PostList");
+    /*  Keyboard.dismiss(); */
     // Toast message after creating a post
     toast.show("Your post has been saved!", {
       type: "success",

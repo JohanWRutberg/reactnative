@@ -1,6 +1,6 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { Button } from "@rneui/themed";
+import { View, StyleSheet } from "react-native";
+import { Button, Input, Text } from "@rneui/themed";
 import { useDeleteUserMutation } from "../../store/api/usersApi";
 import { useDeleteAllPostsMutation } from "../../store/api/postsApi";
 import { useToast } from "react-native-toast-notifications";
@@ -32,7 +32,8 @@ const DeleteUser = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text>Delete User</Text>
+      <View style={{ marginTop: 200 }} />
+      <Text h4>Delete User</Text>
       <Text>{`Are you sure you want to delete ${user.firstName} ${user.lastName}?`}</Text>
       <Button
         style={styles.deleteBtn}

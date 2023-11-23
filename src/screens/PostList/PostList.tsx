@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { View, Text, FlatList, StyleSheet, RefreshControl } from "react-native";
+import { View, Text, FlatList, StyleSheet, RefreshControl, SafeAreaView } from "react-native";
 import { useGetPostsQuery } from "../../store/api/postsApi";
 import { useGetUsersQuery } from "../../store/api/usersApi";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
-import { logIn } from "../../store/slices/authSlice";
-import { SafeAreaView } from "react-native-safe-area-context";
+
 import { formatISO } from "../../utils";
 
 interface Post {
@@ -56,11 +55,11 @@ function PostList() {
   }, [posts]);
 
   if (isLoading) {
-    return <Text>Loading...</Text>;
+    return <Text style={{ fontSize: 16, color: "000" }}>Loading...</Text>;
   }
 
   if (isError) {
-    return <Text>Error loading posts</Text>;
+    return <Text style={{ fontSize: 16, color: "red", textAlign: "center" }}>Error loading posts</Text>;
   }
 
   return (
@@ -81,10 +80,24 @@ function PostList() {
         )}
         onRefresh={onRefresh}
         refreshing={refreshing}
+        ListHeaderComponent={
+          <Text style={{ fontSize: 16, color: "black", textAlign: "center", marginTop: 90 }}>
+            Posts in chronological order
+          </Text>
+        }
+        ListFooterComponent={<View style={styles.bottomMargin}></View>}
       />
     </View>
   );
 }
+
+PostList.navigationOptions = {
+  headerStyle: {
+    backgroundColor: "rgba(0, 0, 0, 0.5)" // Set a semi-transparent dark background
+  },
+  headerTintColor: "black",
+  headerTransparent: true // Set header to be transparent
+};
 
 export default PostList;
 
@@ -94,7 +107,13 @@ const styles = StyleSheet.create({
     margin: 0,
     backgroundColor: "white",
     borderRadius: 12,
-    padding: 10
+    padding: 20,
+    paddingTop: 0,
+    paddingBottom: 0 // Adjust this value based on the height you want
+  },
+  headerText: {
+    fontSize: 18,
+    color: "black"
   },
   infoContainer: {
     backgroundColor: "#0078fe",
@@ -106,5 +125,8 @@ const styles = StyleSheet.create({
   },
   actionsContainer: {
     marginBottom: 0
+  },
+  bottomMargin: {
+    height: 80 // Adjust this value based on the height you want
   }
 });

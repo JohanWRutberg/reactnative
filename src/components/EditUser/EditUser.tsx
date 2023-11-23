@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { Button, Input } from "@rneui/themed";
+import { View, StyleSheet } from "react-native";
+import { Button, Input, Text } from "@rneui/themed";
 import { useUpdateUserMutation } from "../../store/api/usersApi";
 import { useToast } from "react-native-toast-notifications";
 
@@ -28,7 +28,9 @@ const EditUser = ({ route, navigation }) => {
           duration: 4000,
           animationType: "slide-in"
         });
-        navigation.navigate("UserInfo", { user: { ...user, firstName: newFirstName, lastName: newLastName } });
+
+        // Navigate back to the UserList screen
+        navigation.navigate("UserListStack", { screen: "UserList" });
       })
       .catch((error) => {
         toast.show(error, {
@@ -42,26 +44,23 @@ const EditUser = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text>Edit User</Text>
+      <View style={{ marginTop: 85 }} />
+      <Text h4 style={{ textAlign: "center" }}>
+        Edit User
+      </Text>
       <Input
         value={newFirstName}
         disabled={isLoading}
         onChangeText={(text) => setNewFirstName(text)}
         placeholder="New First Name"
-      ></Input>
+      />
       <Input
         value={newLastName}
         disabled={isLoading}
         onChangeText={(text) => setNewLastName(text)}
         placeholder="New Last Name"
-      ></Input>
-      <Button
-        title="Edit User"
-        color="#5E5D5E"
-        disabled={isLoading}
-        loading={isLoading}
-        onPress={handleUpdate}
-      ></Button>
+      />
+      <Button title="Edit User" color="#5E5D5E" disabled={isLoading} loading={isLoading} onPress={handleUpdate} />
     </View>
   );
 };

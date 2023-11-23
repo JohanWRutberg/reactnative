@@ -1,7 +1,7 @@
+import React from "react";
 import { View, Text, FlatList, RefreshControl, StyleSheet } from "react-native";
 import { ListItem, Button } from "@rneui/themed";
 import { useSelector } from "react-redux";
-import React from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { useGetUsersQuery } from "@/src/store/api/usersApi";
 import DeleteUser from "@/src/components/DeleteUser/DeleteUser";
@@ -25,17 +25,39 @@ const UserList = ({ navigation }) => {
 
   const sortedData = data && data.slice().sort((a, b) => a.firstName.localeCompare(b.firstName));
 
+  // Create a custom key for the header text item
+  const headerKey = "header-text";
+
+  // Combine the header text with the user data
+  const combinedData = [{ id: headerKey, isHeader: true }, ...(sortedData || [])];
+
   return (
     <View style={styles.container}>
-      <Text style={styles.headerText}>Select a User to Login.</Text>
-      <Text style={styles.headerText}>As logged in, you are able to Post a message.</Text>
-      {isLoading ? (
-        <Text>Loading...</Text>
-      ) : (
-        <FlatList
-          data={sortedData}
-          refreshControl={<RefreshControl refreshing={isLoading} onRefresh={refetch} />}
-          renderItem={({ item }) => (
+      <FlatList
+        data={combinedData}
+        keyExtractor={(item) => item.id.toString()}
+        refreshControl={<RefreshControl refreshing={isLoading} onRefresh={refetch} />}
+        ListHeaderComponent={<Text style={{ marginTop: 85 }}></Text>}
+        renderItem={({ item, index }) => {
+          if (item.isHeader) {
+            return (
+              <React.Fragment key={item.id}>
+                <Text style={styles.headerText}>
+                  Logged in User:
+                  {loggedInAs ? (
+                    <Text
+                      style={{ color: "black", fontSize: 20, fontWeight: "bold" }}
+                    >{` ${loggedInAs.firstName} ${loggedInAs.lastName}`}</Text>
+                  ) : (
+                    <Text style={{ color: "red", fontSize: 20, fontWeight: "bold" }}> None!</Text>
+                  )}
+                </Text>
+                <Text style={styles.headerText}>Tap on Users name to Login!</Text>
+              </React.Fragment>
+            );
+          }
+
+          return (
             <ListItem
               key={item.id}
               onPress={() => {
@@ -49,6 +71,7 @@ const UserList = ({ navigation }) => {
                       {`${item.firstName} ${item.lastName}`}
                     </ListItem.Title>
                   </View>
+
                   <View style={{ flexDirection: "row", flex: 1, justifyContent: "flex-end" }}>
                     <Button
                       style={styles.editBtn}
@@ -70,9 +93,10 @@ const UserList = ({ navigation }) => {
                 </View>
               </ListItem.Content>
             </ListItem>
-          )}
-        ></FlatList>
-      )}
+          );
+        }}
+        ListFooterComponent={<View style={styles.bottomMargin}></View>}
+      />
     </View>
   );
 };
@@ -85,10 +109,12 @@ const styles = StyleSheet.create({
     margin: 0,
     backgroundColor: "white",
     borderRadius: 12,
-    padding: 10
+    padding: 0,
+    paddingTop: 0,
+    paddingBottom: 0 // Adjust this value based on the height you want
   },
   headerText: {
-    fontSize: 14,
+    fontSize: 18,
     color: "black"
   },
   infoContainer: {
@@ -106,5 +132,8 @@ const styles = StyleSheet.create({
     padding: 2
   },
   deleteBtn: { padding: 2 },
-  logoutBtn: { padding: 2 }
+  logoutBtn: { padding: 2 },
+  bottomMargin: {
+    height: 80 // Adjust this value based on the height you want
+  }
 });
